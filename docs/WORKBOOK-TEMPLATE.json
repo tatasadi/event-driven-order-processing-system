@@ -1,0 +1,292 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Order Processing System - Operational Dashboard\n\nComprehensive monitoring for the event-driven order processing system.\n\n## Quick Links\n- [Live Metrics](https://portal.azure.com)\n- [Service Bus](https://portal.azure.com)\n- [Function App](https://portal.azure.com)"
+      },
+      "name": "title"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "timeRange",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "isRequired": true,
+            "value": {
+              "durationMs": 3600000
+            },
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000,
+                  "createdTime": "2024-01-01T00:00:00.000Z",
+                  "isInitialTime": false,
+                  "grain": 1,
+                  "useDashboardTimeRange": false
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 604800000
+                }
+              ],
+              "allowCustom": true
+            },
+            "label": "Time Range"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "name": "parameters"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customEvents\n| where timestamp {TimeRange}\n| where name in ('OrderSubmitted', 'OrderProcessed', 'OrderProcessingFailed')\n| summarize \n    Submitted = countif(name == 'OrderSubmitted'),\n    Processed = countif(name == 'OrderProcessed'),\n    Failed = countif(name == 'OrderProcessingFailed')\n| extend SuccessRate = round((Processed * 100.0) / Submitted, 2)\n| project Submitted, Processed, Failed, SuccessRate",
+        "size": 3,
+        "title": "Order Processing Summary",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "tiles",
+        "tileSettings": {
+          "titleContent": {
+            "columnMatch": "Submitted",
+            "formatter": 1
+          },
+          "leftContent": {
+            "columnMatch": "Submitted",
+            "formatter": 12,
+            "formatOptions": {
+              "palette": "blue"
+            }
+          },
+          "showBorder": false
+        }
+      },
+      "name": "summary-tiles"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customEvents\n| where timestamp {TimeRange}\n| where name in ('OrderProcessed', 'OrderProcessingFailed')\n| summarize count() by name, bin(timestamp, 5m)\n| render timechart",
+        "size": 0,
+        "title": "Order Processing Over Time",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "timechart"
+      },
+      "customWidth": "50",
+      "name": "processing-over-time"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customEvents\n| where timestamp {TimeRange}\n| where name in ('OrderProcessed', 'OrderProcessingFailed')\n| summarize Total = count(),\n            Failed = countif(name == 'OrderProcessingFailed')\n  by bin(timestamp, 5m)\n| extend ErrorRate = round((Failed * 100.0) / Total, 2)\n| project timestamp, ErrorRate\n| render timechart",
+        "size": 0,
+        "title": "Error Rate %",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "timechart"
+      },
+      "customWidth": "50",
+      "name": "error-rate"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where timestamp {TimeRange}\n| where name == 'OrderProcessingDuration'\n| summarize \n    avg(value),\n    percentile(value, 50),\n    percentile(value, 95),\n    percentile(value, 99)\n  by bin(timestamp, 5m)\n| render timechart",
+        "size": 0,
+        "title": "Processing Duration (ms) - Percentiles",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "timechart"
+      },
+      "customWidth": "50",
+      "name": "processing-duration"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where timestamp {TimeRange}\n| where name == 'MessageQueueAge'\n| summarize avg(value), max(value), percentile(value, 95) by bin(timestamp, 5m)\n| render timechart",
+        "size": 0,
+        "title": "Message Queue Age (ms)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "timechart"
+      },
+      "customWidth": "50",
+      "name": "queue-age"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "---\n## Dependency Performance"
+      },
+      "name": "dependency-header"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "dependencies\n| where timestamp {TimeRange}\n| summarize \n    AvgDuration = avg(duration),\n    P95 = percentile(duration, 95),\n    Calls = count(),\n    SuccessRate = round(countif(success) * 100.0 / count(), 2)\n  by name\n| order by AvgDuration desc",
+        "size": 0,
+        "title": "Dependency Performance Summary",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "table",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "AvgDuration",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "blue"
+              }
+            },
+            {
+              "columnMatch": "SuccessRate",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "green"
+              }
+            }
+          ]
+        }
+      },
+      "customWidth": "50",
+      "name": "dependency-summary"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "dependencies\n| where timestamp {TimeRange}\n| summarize count() by name, success\n| render piechart",
+        "size": 0,
+        "title": "Dependency Calls by Success/Failure",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "piechart"
+      },
+      "customWidth": "50",
+      "name": "dependency-success"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "---\n## Business Metrics"
+      },
+      "name": "business-header"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where timestamp {TimeRange}\n| where name == 'OrderTotalAmount'\n| extend currency = tostring(customDimensions.currency)\n| summarize \n    TotalRevenue = sum(value),\n    AvgOrderValue = avg(value),\n    OrderCount = count()\n  by currency",
+        "size": 0,
+        "title": "Revenue Summary by Currency",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "table",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "TotalRevenue",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "greenRed"
+              }
+            },
+            {
+              "columnMatch": "AvgOrderValue",
+              "formatter": 8,
+              "formatOptions": {
+                "palette": "blue"
+              }
+            }
+          ]
+        }
+      },
+      "customWidth": "50",
+      "name": "revenue-summary"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\n| where timestamp {TimeRange}\n| where name == 'OrderValue'\n| where tostring(customDimensions.status) == 'completed'\n| extend currency = tostring(customDimensions.currency)\n| summarize Revenue = sum(value) by bin(timestamp, 1h), currency\n| render timechart",
+        "size": 0,
+        "title": "Revenue Over Time",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "timechart"
+      },
+      "customWidth": "50",
+      "name": "revenue-over-time"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "---\n## Recent Errors"
+      },
+      "name": "errors-header"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "exceptions\n| where timestamp {TimeRange}\n| extend orderId = tostring(customDimensions.orderId),\n         correlationId = tostring(customDimensions.correlationId)\n| project timestamp, type, message, orderId, correlationId\n| order by timestamp desc\n| take 20",
+        "size": 0,
+        "title": "Recent Exceptions",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "table"
+      },
+      "customWidth": "50",
+      "name": "recent-exceptions"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "exceptions\n| where timestamp {TimeRange}\n| summarize Count = count() by type\n| order by Count desc\n| render piechart",
+        "size": 0,
+        "title": "Errors by Type",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "visualization": "piechart"
+      },
+      "customWidth": "50",
+      "name": "errors-by-type"
+    }
+  ],
+  "fallbackResourceIds": [],
+  "fromTemplateId": "sentinel-UserWorkbook",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

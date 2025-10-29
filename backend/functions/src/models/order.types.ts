@@ -22,6 +22,7 @@ export interface Order {
 	orderDate: string // ISO 8601 timestamp
 	status: OrderStatus
 	metadata?: {
+		correlationId?: string
 		ipAddress?: string
 		userAgent?: string
 		sessionId?: string
