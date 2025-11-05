@@ -396,7 +396,7 @@ Monitors backlog to identify processing bottlenecks.
 ### From This Repository
 - 📊 [KQL Query Library](./KQL-QUERIES.md) - 40+ ready-to-use queries
 - 📈 [Workbook Setup Guide](./WORKBOOK-SETUP-GUIDE.md) - Step-by-step workbook import instructions
-- 📝 [Phase 5 Completion Summary](./PHASE-05-COMPLETION.md) - Implementation details
+
 
 ### Microsoft Documentation
 - [Application Insights Documentation](https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview)
