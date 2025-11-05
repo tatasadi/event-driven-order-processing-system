@@ -36,3 +36,13 @@ export interface CreateOrderResponse {
   message: string;
   orderDate: string;
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  inStock: boolean;
+  imageUrl?: string;
+}

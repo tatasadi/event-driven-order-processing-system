@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from '@/lib/providers/query-provider';
 import { ThemeProvider } from '@/lib/providers/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
+import { ErrorBoundary } from '@/components/error-boundary';
 import { siteConfig } from '@/config/site';
 
 const geistSans = Geist({
@@ -11,7 +13,10 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: siteConfig.name,
+  title: {
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
+  },
   description: siteConfig.description,
 };
 
@@ -30,7 +35,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
+            <Toaster />
           </QueryProvider>
         </ThemeProvider>
       </body>
