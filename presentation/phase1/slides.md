@@ -161,8 +161,6 @@ Customer submits → **Immediate response** → Everything else happens in backg
 
 ✅ Auto-scaling - handle any spike
 
-✅ Resilience - automatic retries
-
 </div>
 
 ---
@@ -208,7 +206,6 @@ graph LR
     A[Next.js Frontend] -->|Submit Order| B[HTTP Function]
     B -->|Publish Message| C[Service Bus Queue]
     C -->|Trigger| D[Queue Processor Function]
-    D -->|Process & Update| E[Database]
     B -->|Log| F[Application Insights]
     D -->|Log| F
 
@@ -216,7 +213,6 @@ graph LR
     style B fill:#22c55e,stroke:#4ade80,stroke-width:4px,color:#000
     style C fill:#f59e0b,stroke:#fbbf24,stroke-width:4px,color:#000
     style D fill:#a855f7,stroke:#c084fc,stroke-width:4px,color:#000
-    style E fill:#ec4899,stroke:#f472b6,stroke-width:4px,color:#000
     style F fill:#06b6d4,stroke:#22d3ee,stroke-width:4px,color:#000
 ```
 
@@ -518,22 +514,18 @@ class: text-center
 
 <div v-click class="p-3 bg-green-500 bg-opacity-20 rounded border border-green-400">
 <div class="text-lg font-bold mb-1">Azure Functions</div>
-<div class="text-xs">Pay per execution</div>
 </div>
 
 <div v-click class="p-3 bg-blue-500 bg-opacity-20 rounded border border-blue-400">
 <div class="text-lg font-bold mb-1">TypeScript</div>
-<div class="text-xs">Errors at build time</div>
 </div>
 
 <div v-click class="p-3 bg-purple-500 bg-opacity-20 rounded border border-purple-400">
 <div class="text-lg font-bold mb-1">Next.js</div>
-<div class="text-xs">Batteries included</div>
 </div>
 
 <div v-click class="p-3 bg-orange-500 bg-opacity-20 rounded border border-orange-400">
 <div class="text-lg font-bold mb-1">Bicep</div>
-<div class="text-xs">One command deploy</div>
 </div>
 
 </div>

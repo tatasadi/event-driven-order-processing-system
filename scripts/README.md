@@ -93,10 +93,61 @@ After running the test, use the provided KQL query in Application Insights to an
 - Dependency performance
 - End-to-end traces
 
+### deploy-local.sh
+
+Automated deployment script for all components.
+
+**Purpose**: Deploy infrastructure, backend, and frontend to Azure in one command.
+
+**Usage**:
+```bash
+# Deploy to development
+./scripts/deploy-local.sh dev
+
+# Deploy to staging
+./scripts/deploy-local.sh staging
+
+# Deploy to production
+./scripts/deploy-local.sh prod
+```
+
+**Features**:
+- Deploys Bicep infrastructure templates
+- Builds and deploys Azure Functions
+- Deploys Static Web App (if available)
+- Displays deployment URLs and health check commands
+
+**Prerequisites**:
+- Azure CLI installed and logged in
+- Azure Functions Core Tools (v4)
+- Node.js 20.x
+- Appropriate Azure permissions
+
+### rollback.sh
+
+Rollback script for production deployments.
+
+**Purpose**: Quickly revert to previous deployment using slot swapping.
+
+**Usage**:
+```bash
+# Rollback production
+./scripts/rollback.sh prod
+
+# Rollback staging
+./scripts/rollback.sh staging
+```
+
+**Features**:
+- Swaps deployment slots (staging ↔ production)
+- Verifies health endpoint after rollback
+- Provides clear error messages
+
+**Note**: Deployment slots require Premium App Service Plan. For Consumption plans, redeploy the previous version manually.
+
 ## Future Scripts
 
 Additional scripts that could be added:
-- `deploy.sh` - Automated deployment script
 - `cleanup-dlq.sh` - Dead letter queue cleanup
 - `health-check.sh` - System health verification
 - `performance-report.sh` - Generate performance reports

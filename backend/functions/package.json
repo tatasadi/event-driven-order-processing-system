@@ -8,7 +8,9 @@
 		"watch": "tsc --watch",
 		"prestart": "npm run build",
 		"start": "func start",
-		"test": "echo \"No tests yet\""
+		"test": "echo \"No tests yet\"",
+		"lint": "echo \"Linting...\" && tsc --noEmit",
+		"type-check": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@azure/functions": "^4.0.0",
