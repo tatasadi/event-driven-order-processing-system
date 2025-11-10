@@ -1,22 +1,22 @@
+'use client';
+
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { CheckCircle2, ArrowLeft, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 
-export default function OrderSuccessPage({
-  searchParams,
-}: {
-  searchParams: { orderId?: string };
-}) {
-  const orderId = searchParams.orderId || 'Unknown';
+export default function OrderSuccessPage() {
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get('orderId') || 'Unknown';
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1">
-        <div className="container max-w-2xl py-16">
+        <div className="container max-w-2xl py-16 mx-auto">
           <Card>
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">

@@ -19,6 +19,19 @@ export async function OrderSubmit(
   request: HttpRequest,
   context: InvocationContext
 ): Promise<HttpResponseInit> {
+  // Handle CORS preflight requests
+  if (request.method === 'OPTIONS') {
+    return {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Correlation-Id',
+        'Access-Control-Max-Age': '86400',
+      },
+    };
+  }
+
   const startTime = Date.now();
 
   // Get or generate correlation ID
@@ -171,6 +184,9 @@ export async function OrderSubmit(
         {
           'Content-Type': 'application/json',
           'Location': `/api/orders/${order.orderId}`,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Correlation-Id',
         },
         correlationId
       ),
@@ -198,7 +214,12 @@ export async function OrderSubmit(
       return {
         status: 400,
         headers: addCorrelationHeader(
-          { 'Content-Type': 'application/json' },
+          {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Correlation-Id',
+          },
           correlationId
         ),
         body: JSON.stringify({
@@ -221,7 +242,12 @@ export async function OrderSubmit(
     return {
       status: 500,
       headers: addCorrelationHeader(
-        { 'Content-Type': 'application/json' },
+        {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Correlation-Id',
+        },
         correlationId
       ),
       body: JSON.stringify({
@@ -234,7 +260,7 @@ export async function OrderSubmit(
 }
 
 app.http('OrderSubmit', {
-  methods: ['POST'],
+  methods: ['POST', 'OPTIONS'],
   authLevel: 'anonymous',
   route: 'orders',
   handler: OrderSubmit,

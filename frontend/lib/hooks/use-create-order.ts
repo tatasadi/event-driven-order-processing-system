@@ -15,7 +15,30 @@ export function useCreateOrder() {
   return useMutation<CreateOrderResponse, ApiError, CreateOrderRequest>({
     mutationFn: (orderData: CreateOrderRequest) => ordersApi.createOrder(orderData),
 
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      // Store order in localStorage for the orders list
+      const storedOrders = localStorage.getItem('submittedOrders');
+      const orders = storedOrders ? JSON.parse(storedOrders) : [];
+
+      const totalAmount = variables.items.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      const newOrder = {
+        orderId: data.orderId,
+        customerId: variables.customerId,
+        customerEmail: variables.customerEmail,
+        totalAmount,
+        currency: variables.currency,
+        itemCount: variables.items.length,
+        submittedAt: new Date().toISOString(),
+        status: 'submitted' as const,
+      };
+
+      orders.unshift(newOrder); // Add to beginning
+      localStorage.setItem('submittedOrders', JSON.stringify(orders.slice(0, 50))); // Keep last 50
+
       toast({
         title: 'Order Submitted Successfully!',
         description: `Order ID: ${data.orderId}. Your order has been received and is being processed.`,

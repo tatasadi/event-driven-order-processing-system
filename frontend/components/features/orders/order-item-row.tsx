@@ -154,7 +154,8 @@ export function OrderItemRow({
           <input
             type="hidden"
             {...field}
-            onChange={(e) => field.onChange(parseFloat(e.target.value))}
+            value={field.value || 0}
+            onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
           />
         )}
       />

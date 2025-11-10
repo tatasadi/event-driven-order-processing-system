@@ -34,7 +34,6 @@ export interface CreateOrderResponse {
   orderId: string;
   status: OrderStatus;
   message: string;
-  orderDate: string;
 }
 
 export interface Product {
