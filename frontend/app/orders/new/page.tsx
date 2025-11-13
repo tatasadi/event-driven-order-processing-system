@@ -12,7 +12,7 @@ export default function NewOrderPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <main className="flex-1 bg-muted">
         <OrderForm />
       </main>
       <Footer />

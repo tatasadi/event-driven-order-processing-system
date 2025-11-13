@@ -13,7 +13,7 @@ export default function HomePage() {
             <h1 className="text-5xl font-bold leading-tight tracking-tighter md:text-6xl lg:text-7xl xl:text-8xl">
               Event-Driven Order Processing
             </h1>
-            <p className="max-w-[750px] text-xl leading-relaxed text-gray-600 dark:text-gray-400 sm:text-2xl">
+            <p className="max-w-[750px] text-xl leading-relaxed text-muted-foreground sm:text-2xl">
               A production-ready order processing system built with Azure
               Functions, Service Bus, and Next.js 15.
             </p>
@@ -27,21 +27,21 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="mt-20 grid gap-8 md:grid-cols-3 max-w-6xl w-full">
-            <div className="rounded-xl border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="rounded-xl border-2 border-border bg-card p-8 shadow-sm hover:shadow-md transition-shadow">
               <h3 className="text-xl font-bold mb-4">Azure Functions</h3>
-              <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Serverless order submission and processing with automatic scaling
               </p>
             </div>
-            <div className="rounded-xl border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="rounded-xl border-2 border-border bg-card p-8 shadow-sm hover:shadow-md transition-shadow">
               <h3 className="text-xl font-bold mb-4">Service Bus</h3>
-              <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Reliable message queuing with retry logic and dead-letter handling
               </p>
             </div>
-            <div className="rounded-xl border-2 border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="rounded-xl border-2 border-border bg-card p-8 shadow-sm hover:shadow-md transition-shadow">
               <h3 className="text-xl font-bold mb-4">Application Insights</h3>
-              <p className="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-base text-muted-foreground leading-relaxed">
                 Full observability with metrics, logs, and distributed tracing
               </p>
             </div>

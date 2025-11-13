@@ -91,7 +91,7 @@ export function OrdersList() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Orders</h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-muted-foreground">
             View and track your submitted orders
           </p>
         </div>
@@ -103,9 +103,9 @@ export function OrdersList() {
       {orders.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <PackageSearch className="h-16 w-16 text-gray-400 mb-4" />
+            <PackageSearch className="h-16 w-16 text-muted-foreground mb-4" />
             <h2 className="text-2xl font-semibold mb-2">No Orders Yet</h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6 text-center max-w-md">
+            <p className="text-muted-foreground mb-6 text-center max-w-md">
               You haven't submitted any orders yet. Create your first order to get started.
             </p>
             <Link href="/orders/new">
@@ -116,7 +116,7 @@ export function OrdersList() {
       ) : (
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Showing {orders.length} {orders.length === 1 ? 'order' : 'orders'}
             </p>
             <Button
@@ -147,16 +147,16 @@ export function OrdersList() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p className="text-sm font-medium text-muted-foreground">
                       Customer
                     </p>
                     <p className="text-sm font-semibold">{order.customerId}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-muted-foreground">
                       {order.customerEmail}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p className="text-sm font-medium text-muted-foreground">
                       Items
                     </p>
                     <p className="text-sm font-semibold">
@@ -164,7 +164,7 @@ export function OrdersList() {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    <p className="text-sm font-medium text-muted-foreground">
                       Total Amount
                     </p>
                     <p className="text-lg font-bold">
@@ -174,10 +174,10 @@ export function OrdersList() {
                 </div>
 
                 <div className="mt-4 pt-4 border-t">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-muted-foreground">
                     Order ID: {order.orderId}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Note: Orders are being processed asynchronously via Azure Service Bus.
                     Check Application Insights for processing status.
                   </p>
@@ -188,11 +188,11 @@ export function OrdersList() {
         </div>
       )}
 
-      <Card className="mt-8 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+      <Card className="mt-8 bg-accent border-border">
         <CardHeader>
           <CardTitle className="text-lg">About Order Tracking</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-gray-700 dark:text-gray-300 space-y-2">
+        <CardContent className="text-sm text-accent-foreground space-y-2">
           <p>
             This list shows orders submitted from this browser. Orders are processed asynchronously
             through Azure Service Bus and Azure Functions.

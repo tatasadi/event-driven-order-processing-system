@@ -8,7 +8,7 @@ export default function OrdersPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-gray-50 dark:bg-gray-900">
+      <main className="flex-1 bg-muted">
         <OrdersList />
       </main>
       <Footer />
