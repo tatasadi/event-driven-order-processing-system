@@ -84,8 +84,8 @@ export function OrderItemRow({
                   if (product) {
                     field.onChange(value);
                     // Also update product name and price
-                    setValue(`items.${index}.productName`, product.name);
-                    setValue(`items.${index}.price`, product.price);
+                    setValue(`items.${index}.productName`, product.name, { shouldValidate: true });
+                    setValue(`items.${index}.price`, product.price, { shouldValidate: true });
                   }
                 }}
                 value={field.value}

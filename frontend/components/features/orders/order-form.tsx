@@ -39,7 +39,7 @@ export function OrderForm() {
   const form = useForm<CreateOrderFormData>({
     resolver: zodResolver(createOrderFormSchema),
     defaultValues: defaultOrderFormValues,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   const { fields, append, remove } = useFieldArray({

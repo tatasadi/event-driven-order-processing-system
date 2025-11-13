@@ -40,10 +40,23 @@ export async function OrderProcessor(
 
 		// Track message age (if enqueuedTimeUtc is available)
 		if (context.triggerMetadata?.enqueuedTimeUtc) {
-			const messageAge = Date.now() - new Date(context.triggerMetadata.enqueuedTimeUtc as string).getTime()
-			telemetry.trackMetric('MessageQueueAge', messageAge, {
-				orderId: order.orderId,
-			})
+			const enqueuedTime = new Date(context.triggerMetadata.enqueuedTimeUtc as string).getTime()
+			const currentTime = Date.now()
+			const messageAge = currentTime - enqueuedTime
+
+			// Only track if the message age is reasonable (less than 1 minute for development)
+			// Helps avoid tracking stale or incorrectly calculated timestamps
+			if (messageAge > 0 && messageAge < 60000) {
+				telemetry.trackMetric('MessageQueueAge', messageAge, {
+					orderId: order.orderId,
+				})
+			} else if (messageAge > 0) {
+				context.warn(
+					`Unusual message queue age detected: ${messageAge}ms (${Math.round(messageAge / 1000)}s). ` +
+					`Enqueued: ${context.triggerMetadata.enqueuedTimeUtc}, ` +
+					`Current: ${new Date(currentTime).toISOString()}`
+				)
+			}
 		}
 
 		// Check idempotency

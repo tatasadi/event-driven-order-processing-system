@@ -67,14 +67,15 @@ export class OrderProcessingService {
 
 			const duration = Date.now() - startTime
 			this.telemetry.trackDependency(
-				'InventoryService',
-				'HTTP',
 				'Check Inventory',
+				'HTTP',
+				'POST /api/inventory/check',
 				duration,
 				true,
 				{
 					orderId: order.orderId,
 					itemCount: order.items.length.toString(),
+					service: 'InventoryService',
 				}
 			)
 
@@ -83,14 +84,15 @@ export class OrderProcessingService {
 			const duration = Date.now() - startTime
 
 			this.telemetry.trackDependency(
-				'InventoryService',
-				'HTTP',
 				'Check Inventory',
+				'HTTP',
+				'POST /api/inventory/check',
 				duration,
 				false,
 				{
 					orderId: order.orderId,
 					error: error.message,
+					service: 'InventoryService',
 				}
 			)
 
@@ -116,15 +118,16 @@ export class OrderProcessingService {
 			const duration = Date.now() - startTime
 
 			this.telemetry.trackDependency(
-				'PaymentGateway',
-				'HTTP',
 				'Process Payment',
+				'HTTP',
+				'POST /api/payment/process',
 				duration,
 				true,
 				{
 					orderId: order.orderId,
 					amount: order.totalAmount.toString(),
 					currency: order.currency,
+					service: 'PaymentGateway',
 				}
 			)
 
@@ -140,15 +143,16 @@ export class OrderProcessingService {
 			const duration = Date.now() - startTime
 
 			this.telemetry.trackDependency(
-				'PaymentGateway',
-				'HTTP',
 				'Process Payment',
+				'HTTP',
+				'POST /api/payment/process',
 				duration,
 				false,
 				{
 					orderId: order.orderId,
 					amount: order.totalAmount.toString(),
 					error: error.message,
+					service: 'PaymentGateway',
 				}
 			)
 
@@ -171,13 +175,14 @@ export class OrderProcessingService {
 
 		const duration = Date.now() - startTime
 		this.telemetry.trackDependency(
-			'InventoryService',
-			'HTTP',
 			'Reserve Inventory',
+			'HTTP',
+			'POST /api/inventory/reserve',
 			duration,
 			true,
 			{
 				orderId: order.orderId,
+				service: 'InventoryService',
 			}
 		)
 	}
@@ -194,14 +199,15 @@ export class OrderProcessingService {
 
 		const duration = Date.now() - startTime
 		this.telemetry.trackDependency(
-			'ShippingService',
-			'HTTP',
 			'Create Shipment',
+			'HTTP',
+			'POST /api/shipping/create',
 			duration,
 			true,
 			{
 				orderId: order.orderId,
 				trackingNumber,
+				service: 'ShippingService',
 			}
 		)
 

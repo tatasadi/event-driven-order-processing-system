@@ -95,6 +95,7 @@ export class TelemetryService {
 		duration: number,
 		success: boolean,
 		properties?: CustomProperties,
+		target?: string,
 	): void {
 		this.context.log(
 			`Dependency: ${name} (${type}) - ${duration}ms - ${success ? 'SUCCESS' : 'FAILED'}`,
@@ -105,6 +106,7 @@ export class TelemetryService {
 				name,
 				dependencyTypeName: type,
 				data,
+				target: target || 'local-simulation', // Provide target to avoid URL parsing
 				duration,
 				success,
 				resultCode: success ? 200 : 500,
